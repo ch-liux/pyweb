@@ -1,0 +1,63 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>后台登录</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'ladmin/layui/css/layui.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'ladmin/css/login.css' %}" />
+	</head>
+
+	<body>
+		<div class="m-login-bg">
+			<div class="m-login">
+				<h3>后台系统登录</h3>
+				<div class="m-login-warp">
+					<form class="layui-form" action="/user/login" method="post">
+						{% csrf_token %}
+						<div class="layui-form-item">
+							<input type="text" name="username" required lay-verify="required" placeholder="用户名" value="{{login_form.username.value}}"
+								autocomplete="off" class="layui-input" {% if login_form.errors.username %}style="border-color:red;"{% endif %}>
+						</div>
+						<div class="layui-form-item">
+							<input type="password" name="password" required lay-verify="required" placeholder="密码" value="{{login_form.password.value}}"
+								autocomplete="off" class="layui-input" {% if login_form.errors.password %}style="border-color:red;"{% endif %}>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<input name="captcha_1" id="captcha_1" type="text" required lay-verify="required" placeholder="验证码" 
+									autocomplete="off" class="layui-input" {% if login_form.errors.captcha %}style="border-color:red;"{% endif %}>
+							</div>
+							<div class="layui-inline">
+								<img src="{{ image_url}}" alt="点击更换" class="captcha">
+								<input id="id_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}">
+							</div>
+						</div>
+						
+						<div class="layui-form-item m-login-btn">
+							<div class="layui-inline">
+								<button class="layui-btn layui-btn-normal" lay-submit lay-filter="login">登录</button>
+							</div>
+							<div class="layui-inline">
+								<button type="reset" class="layui-btn layui-btn-primary">取消</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script src="{% static 'jquery/jquery-3.0.0.min.js' %}" type="text/javascript" charset="utf-8"></script>
+
+		<script>
+			$('.captcha').click(function () {
+				$.getJSON("/captcha/refresh/", function (result) {
+					$('.captcha').attr('src', result['image_url']);
+					$('#id_captcha_0').val(result['hashkey'])
+				});
+			});
+		</script>
+	</body>
+</html>

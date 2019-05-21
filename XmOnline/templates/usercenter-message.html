@@ -1,0 +1,77 @@
+{% extends 'user_base.html' %}
+{% load staticfiles %}
+{% block title %}
+    我的消息- 慕学在线网
+{% endblock %}
+
+{% block user_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="/user/home/">个人中心</a>></li>
+                <li>我的消息</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block user_right_content %}
+    <div class="right" >
+		<div class="personal_des Releasecont">
+			<div class="head">
+				<h1>我的消息</h1>
+			</div>
+
+		</div>
+		<div class="personal_des permessage">
+			<div class="head">
+				<ul class="tab_header messagehead">
+					<li class="active"><a href="{% url 'users:mymessage' %}">个人消息</a> </li>
+				</ul>
+
+
+			</div>
+			<div class="messagelist">
+
+                    <div class="messages">
+                        {% for meassage in all_meassage.object_list %}
+                        <div class="fr">
+                            <div class="top"><span class="fl time">{{ meassage.add_time }}</span><span class="fr btn foldbtn"></span></div>
+                            <p>
+                                {{ meassage.message }}
+                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+
+
+			</div>
+
+
+			<div class="pageturn">
+                <ul class="pagelist">
+                    {% if all_meassage.has_previous %}
+                        <li class="long"><a href="?{{ all_meassage.previous_page_number.querystring }}">上一页</a></li>
+                    {% endif %}
+                    {% for page in all_meassage.pages %}
+                        {% if page %}
+                            {% ifequal page all_meassage.number %}
+                                <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                            {% else %}
+                                <li class=""><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                            {% endifequal %}
+                        {% else %}
+                            <li class="none"><a href="">...</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if all_meassage.has_next %}
+                        <li class="long"><a href="?{{ all_meassage.next_page_number.querystring }}">下一页</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+		</div>
+
+	</div>
+{% endblock %}

@@ -1,0 +1,185 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'ladmin/layui/css/layui.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'ladmin/css/admin.css' %}"/>
+
+<div class="layui-tab page-content-wrap">
+    <ul class="layui-tab-title">
+      <li class="layui-this">修改资料</li>
+      <li>修改密码</li>
+    </ul>
+    <div class="layui-tab-content">
+      <div class="layui-tab-item layui-show">
+          <form class="layui-form"  style="width: 90%;padding-top: 20px;">
+              {% csrf_token %}
+            <div class="layui-form-item">
+              <label class="layui-form-label">ID：</label>
+              <div class="layui-input-block">
+                <input type="text" name="id" disabled autocomplete="off" class="layui-input layui-disabled" value="{{user.id}}">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">用户名：</label>
+              <div class="layui-input-block">
+                <input type="text" name="username" disabled autocomplete="off" class="layui-input layui-disabled" value="{{user.username}}">
+              </div>
+            </div>
+             <div class="layui-form-item">
+              <label class="layui-form-label">昵称：</label>
+              <div class="layui-input-block">
+                <input type="text" name="nickname" required  lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input" value="{{user.nickname}}">
+              </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别：</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="gender" value="male" title="男" {% if user.gender == 'male' %}checked{% endif %}>
+                    <input type="radio" name="gender" value="female" title="女" {% if user.gender == 'female' %}checked{% endif %}>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">生日：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="birthday" id="birthday" required lay-verify="required" placeholder="yyyy年MM月dd日" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">邮箱：</label>
+              <div class="layui-input-block">
+                <input type="email" name="email" required  lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input" value="{{user.email}}">
+              </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">住址：</label>
+                <div class="layui-input-block">
+                  <input type="text" name="address" required  lay-verify="required" placeholder="请输入住址" autocomplete="off" class="layui-input" value="{{user.address}}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">联系方式：</label>
+                <div class="layui-input-block">
+                  <input type="text" name="mobile" required  lay-verify="required" placeholder="请输入号码" autocomplete="off" class="layui-input" value="{{user.mobile}}">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">备注：</label>
+              <div class="layui-input-block">
+                <textarea name="desc" placeholder="请输入内容" class="layui-textarea">{{user.desc}}</textarea>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="adminInfo">立即提交</button>
+              </div>
+            </div>
+          </form>
+      </div>
+
+      <div class="layui-tab-item">
+          <form class="layui-form" style="width: 90%;padding-top: 20px;">
+            <input type="hidden" name="id" disabled autocomplete="off" class="layui-input layui-disabled" value="{{user.id}}">
+            <div class="layui-form-item">
+              <label class="layui-form-label">用户名：</label>
+              <div class="layui-input-block">
+                <input type="text" name="username" disabled autocomplete="off" class="layui-input layui-disabled" value="{{user.username}}">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">旧密码：</label>
+              <div class="layui-input-block">
+                <input type="password" name="pwd1" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">新密码：</label>
+              <div class="layui-input-block">
+                <input type="password" name="pwd2" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">重复密码：</label>
+              <div class="layui-input-block">
+                <input type="password" name="pwd3" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="adminPassword">立即提交</button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+
+<script src="{% static 'ladmin/layui/layui.js' %}" type="text/javascript" charset="utf-8"></script>
+
+<script>
+layui.use(['laydate'], function(){
+    var laydate = layui.laydate;
+
+    laydate.render({
+      elem: '#birthday'
+      ,type: 'date'
+      ,value: '{{user.birthday}}'
+      ,format: 'yyyy年MM月dd日'
+      ,min: '1970-01-01'
+      ,max: new Date().toLocaleDateString()
+    })
+});
+</script>
+
+
+<script>
+    layui.use(['form','element','jquery'], function(){
+      var form = layui.form;
+      var element = layui.element;
+      var $ = layui.jquery;
+      form.render();
+
+      //监听信息提交
+      form.on('submit(adminInfo)', function(data){
+        $.ajax({
+          url: "/user/info",
+          type: "POST",
+          data: data.field,
+          dataType: "json",
+          success: function(res){
+            if(res.code==0){
+              layer.msg(res.msg);
+            }else{
+              layer.msg(res.msg, {shift:6});
+            }
+          }
+        });
+        return false;
+      });
+
+      //监听密码提交
+      form.on('submit(adminPassword)', function(data){
+        if(data.field.pwd2 != data.field.pwd3){
+          layer.msg("密码不一致", {shift:6});
+          return false;
+        }
+        $.ajax({
+          url: "/user/info",
+          type: "PUT",
+          data: data.field,
+          dataType: "json",
+          beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+          },
+          success: function(res){
+            if(res.code==0){
+              layer.msg(res.msg);
+            }else{
+              layer.msg(res.msg, {shift:6});
+            }
+            return false;
+          }
+        });
+        return false;
+      });
+
+    });
+</script>
